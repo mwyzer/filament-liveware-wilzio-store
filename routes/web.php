@@ -33,3 +33,15 @@ Route::middleware('auth:customer')->group(function () {
 
 //route home
 Route::get('/', Web\Home\Index::class)->name('home');
+
+//route products index
+Route::get('/products', Web\Products\Index::class)->name('web.product.index');
+
+//route category show
+Route::get('/category/{slug}', Web\Category\Show::class)->name('web.category.show');
+
+//route product show
+Route::get('/products/{slug}', Web\Products\Show::class)->name('web.product.show');
+
+//route cart
+Route::get('/cart', Web\Cart\Index::class)->name('web.cart.index')->middleware('auth:customer');
