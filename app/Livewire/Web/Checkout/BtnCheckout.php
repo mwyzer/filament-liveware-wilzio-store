@@ -10,15 +10,15 @@ use Illuminate\Support\Facades\DB;
 
 class BtnCheckout extends Component
 {
-    public $province_id;
-    public $city_id;
-    public $address;
+    // public $province_id;
+    // public $city_id;
+    // public $address;
 
-    public $selectCourier;
-    public $selectService;
-    public $selectCost;
+    // public $selectCourier;
+    // public $selectService;
+    // public $selectCost;
 
-    public $totalWeight;
+    // public $totalWeight;
     public $grandTotal;
 
     public $response;
@@ -38,12 +38,12 @@ class BtnCheckout extends Component
         \Midtrans\Config::$is3ds        = config('midtrans.is_3ds');
     }
 
-    public function mount($selectCourier = null, $selectService = null, $selectCost = null)
-    {
-        $this->selectCourier = $selectCourier;
-        $this->selectService = $selectService;
-        $this->selectCost = $selectCost;
-    }
+    // public function mount($selectCourier = null, $selectService = null, $selectCost = null)
+    // {
+    //     $this->selectCourier = $selectCourier;
+    //     $this->selectService = $selectService;
+    //     $this->selectCost = $selectCost;
+    // }
     
     /**
      * storeCheckout
@@ -58,10 +58,10 @@ class BtnCheckout extends Component
         $customer = auth()->guard('customer')->user();
 
         // Validasi awal
-        if (!$customer || !$this->province_id || !$this->city_id || !$this->address || !$this->grandTotal) {
-            session()->flash('error', 'Data tidak lengkap. Silakan periksa kembali.');
-            return;
-        }
+        // if (!$customer || !$this->province_id || !$this->city_id || !$this->address || !$this->grandTotal) {
+        //     session()->flash('error', 'Data tidak lengkap. Silakan periksa kembali.');
+        //     return;
+        // }
 
         try {
             DB::transaction(function () use ($customer) {
@@ -72,20 +72,20 @@ class BtnCheckout extends Component
                 $transaction = Transaction::create([
                     'customer_id' => $customer->id,
                     'invoice'     => $invoice,
-                    'province_id' => $this->province_id,
-                    'city_id'     => $this->city_id,
-                    'address'     => $this->address,
-                    'weight'      => $this->totalWeight,
+                    // 'province_id' => $this->province_id,
+                    // 'city_id'     => $this->city_id,
+                    // 'address'     => $this->address,
+                    // 'weight'      => $this->totalWeight,
                     'total'       => $this->grandTotal,
                     'status'      => 'PENDING',
                 ]);
 
                 // Buat data pengiriman
-                $transaction->shipping()->create([
-                    'shipping_courier' => $this->selectCourier,
-                    'shipping_service' => $this->selectService,
-                    'shipping_cost'    => $this->selectCost,
-                ]);
+                // $transaction->shipping()->create([
+                //     'shipping_courier' => $this->selectCourier,
+                //     'shipping_service' => $this->selectService,
+                //     'shipping_cost'    => $this->selectCost,
+                // ]);
 
                 // Detail item
                 $item_details = [];
@@ -108,12 +108,12 @@ class BtnCheckout extends Component
                 }
 
                 // Tambahkan ongkos kirim ke item details
-                $item_details[] = [
-                    'id'       => 'shipping',
-                    'price'    => $this->selectCost,
-                    'quantity' => 1,
-                    'name'     => 'Ongkos Kirim: ' . $this->selectCourier . ' - ' . $this->selectService,
-                ];
+                // $item_details[] = [
+                //     'id'       => 'shipping',
+                //     'price'    => $this->selectCost,
+                //     'quantity' => 1,
+                //     'name'     => 'Ongkos Kirim: ' . $this->selectCourier . ' - ' . $this->selectService,
+                // ];
 
                 // Hapus keranjang setelah checkout
                 Cart::where('customer_id', $customer->id)->delete();
@@ -127,7 +127,7 @@ class BtnCheckout extends Component
                     'customer_details' => [
                         'first_name'       => $customer->name,
                         'email'            => $customer->email,
-                        'shipping_address' => $this->address,
+                        // 'shipping_address' => $this->address,
                     ],
                     'item_details' => $item_details,
                 ];
