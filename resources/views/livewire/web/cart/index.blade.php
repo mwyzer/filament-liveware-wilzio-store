@@ -45,6 +45,7 @@ Food Store - Eat Your Favorite Foods
                                                 <div class="text-end">
                                                     
                                                     <!-- btn delete -->
+                                                    <livewire:web.cart.btn-delete :cart_id="$cart->id" />
 
                                                 </div>
                                             </div>
@@ -63,6 +64,9 @@ Food Store - Eat Your Favorite Foods
                                                         
                                                         <!-- increment qty -->
                                                         <livewire:web.cart.btn-increment :cart_id="$cart->id" :product_id="$cart->product_id" />
+
+
+
 
                                                     </div>
                                                 </div>
